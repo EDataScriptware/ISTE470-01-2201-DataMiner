@@ -87,31 +87,73 @@ RA = np.array(RA_list)
 TL = np.array(TL_list[0])
 TR = np.array(TR_list[0])
 
-print("PRV: Maximum: " + maximum(RV))
-print("PRA: Maximum: " + maximum(RA))
+# print(""+ str(np.max(RV[0])))
+def toString(string, array):
+    print(string + " Min: " + str(np.min(array)) + " Max: " + str(np.max(array)) + " Average: " + str(np.average(array)))
+# 
+PRV = []
+ARV = []
+MRV = []
 
-# area = np.pi*3
-# for i in range(0,1):
-#     plt.subplot(311)
-#     plt.scatter(TL, LA[6,:], s=area, color="black")
-#     plt.title('TL vs LA')
-#     plt.xlabel('Time (ms)')
-#     plt.ylabel('Linear Accel (g)')
-#     plt.xticks(np.arange(0, 56, step=7))
+PLA = []
+ALA = []
+MLA = []
 
-#     plt.subplot(312)
-#     plt.scatter(TR, RV[i, :], s=area, color="black")
-#     plt.title('TR vs RV')
-#     plt.xlabel('Time (ms)')
-#     plt.ylabel('Rotational Velocity (rad/s)')
-#     plt.xticks(np.arange(0, 56, step=7))
+PRA = []
+ARA = []
+MRA = []
 
-#     plt.subplot(313)
-#     plt.scatter(TR, RA[i, :], s=area, color="black")
-#     plt.title('TR vs RA')
-#     plt.xlabel('Time (ms)')
-#     plt.ylabel('Rotational Velocity (rad/s^2)')
-#     plt.xticks(np.arange(0, 56, step=7))
+for i in RV:
+    PRV.append(np.max(i))
+    ARV.append(np.average(i))
+    MRV.append(np.min(i))
+
+for i in LA:
+    PLA.append(np.max(i))
+    ALA.append(np.average(i))
+    MLA.append(np.min(i))
+
+for i in RA:
+    PRA.append(np.max(i))
+    ARA.append(np.average(i))
+    MRA.append(np.min(i))
+
+toString("MLA", MLA)
+toString("ALA", ALA)
+toString("PLA", PLA)
+print("\n")
+toString("MRV", MRV)
+toString("ARV", ARV)
+toString("PRV", PRV)
+print("\n")
+toString("MRA", MRA)
+toString("ARA", ARA)
+toString("PRA", PRA)
+
+area = np.pi*3
+for i in range(0,1):
+    plt.subplot(311)
+    plt.scatter(PLA, PRA, s=area, color="black")
+    plt.title('PLA vs PRA')
+    plt.xlabel('PLA')
+    plt.ylabel('PRA')
+    plt.xticks(np.arange(0, 175, step=5))
+    plt.yticks(np.arange(0, 65, step=5))
+
+
+    # plt.subplot(312)
+    # plt.plot(TR, RV[i, :], color="black")
+    # plt.title('TR vs RV')
+    # plt.xlabel('Time (ms)')
+    # plt.ylabel('Rotational Velocity (rad/s)')
+    # plt.xticks(np.arange(0, 56, step=7))
+
+    # plt.subplot(313)
+    # plt.plot(TR, RA[i, :], color="black")
+    # plt.title('TR vs RA')
+    # plt.xlabel('Time (ms)')
+    # plt.ylabel('Rotational Velocity (rad/s^2)')
+    # plt.xticks(np.arange(0, 56, step=7))
 
     
 
@@ -143,9 +185,9 @@ print("PRA: Maximum: " + maximum(RA))
 #     plt.xticks(np.arange(0, 55, step=5))
 
     
-#     plt.savefig('Instance' + str(i + 1) + '.png')
-#     plt.show()
-#     plt.close()
+    plt.savefig('Instance' + str(i + 1) + '.png')
+    plt.show()
+    plt.close()
 
 
 
