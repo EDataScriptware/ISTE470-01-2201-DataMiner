@@ -116,7 +116,7 @@ print("The largest values of PRV:\n" +
         str(find_nLargestValue(P_RV,5)))
 print("The largest values of PRA:\n" + 
         str(find_nLargestValue(P_RA,5)))
-
+print("------------")
 
 # Full Plot of A_LA, P_RV, P_RA
 def displayFullPlot():
@@ -128,8 +128,8 @@ def displayFullPlot():
         plt.scatter(A_LA, P_RA,s=sizP,c='blue',marker='.' ,label='ALA vs PRA')
         plt.scatter(P_RV,P_RA,s=sizP,c='orange',marker='.' ,label='PRV vs PRA')
         plt.legend()
-        x_max = (find_nLargestValue(np.concatenate([A_LA,P_RV]),1));
-        y_max = (find_nLargestValue(np.concatenate([P_RV,P_RA]),1));
+        x_max = np.max(np.concatenate([A_LA,P_RV]))
+        y_max = np.max(np.concatenate([P_RV,P_RA]))
         plt.xticks(np.arange(0,np.round(x_max,10)+10, step = 5))
         plt.yticks(np.arange(0,np.round(y_max,10)+10, step = 5))
         plt.title('Full Plot Overview')
@@ -150,31 +150,27 @@ def displayThreeSlots():
         plt.plot()
         plt.scatter(A_LA, P_RV,s=sizP,c='green',marker='.',label='ALA vs PRV')
         plt.title('ALA vs PRV')
-        #plt.ylabel('Instance 1')
-        #plt.xlabel('ALA vs PRV')
-        x_max = (find_nLargestValue(A_LA,1));
-        y_max = (find_nLargestValue(P_RV,1));
-        plt.xticks(np.arange(0,np.round(np.max(A_LA),10)+10, step = 5))
-        plt.yticks(np.arange(0,np.round(np.max(P_RV),10)+10, step = 5))
+        x_max = np.max(A_LA)
+        y_max = np.max(P_RV)
+        plt.xticks(np.arange(0,np.round(x_max,10)+10, step = 5))
+        plt.yticks(np.arange(0,np.round(y_max,10)+10, step = 5))
         #print("5 largest values " + str(find_nLargestValue(np.concatenate([A_LA,P_RV]),5)))
 
         plt.figure(2)
         plt.plot()
         plt.scatter(A_LA, P_RA,s=sizP,c='blue',marker='.',label='ALA vs PRA')
-        #plt.ylabel('Instance 2')
         plt.title('ALA vs PRA')
-        x_max = (find_nLargestValue(A_LA,1));
-        y_max = (find_nLargestValue(P_RA,1));
+        x_max = np.max(A_LA)
+        y_max = np.max(P_RV)
         plt.xticks(np.arange(0,np.round(x_max,10)+10, step = 5))
         plt.yticks(np.arange(0,np.round(y_max,10)+10, step = 5))
 
         plt.figure(3)
         plt.plot()
         plt.scatter(P_RV,P_RA,s=sizP,c='orange',marker='.',label='PRV vs PRA')
-        #plt.ylabel("Instance 3")
         plt.title('PRV vs PRA')
-        x_max = (find_nLargestValue(P_RV,1));
-        y_max = (find_nLargestValue(P_RA,1));
+        x_max = np.max(P_RV)
+        y_max = np.max(P_RA)
         plt.xticks(np.arange(0,np.round(x_max,10)+10, step = 5))
         plt.yticks(np.arange(0,np.round(y_max,10)+10, step = 5))
         
