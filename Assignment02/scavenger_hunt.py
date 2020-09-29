@@ -63,7 +63,6 @@ def maximum(arr,xdi):
 
 def find_nLargestValue(arr,n):
     unsorted5LV = np.sort(arr,axis=0)[-n:] # Grab top 5 largest values
-    print(unsorted5LV)
     asc5LV = -np.sort(-unsorted5LV) # sort to Ascending
     return asc5LV
 
@@ -130,8 +129,10 @@ def displayFullPlot():
         plt.scatter(A_LA, P_RA,s=sizP,c='blue',marker='.' ,label='ALA vs PRA')
         plt.scatter(P_RV,P_RA,s=sizP,c='orange',marker='.' ,label='PRV vs PRA')
         plt.legend()
-        plt.xticks(np.arange(0,np.round(np.sort(np.array([np.max(A_LA),np.max(P_RV)]),axis=0)[-1:],10)+5, step = 5))
-        plt.yticks(np.arange(0,np.round(np.sort(np.array([np.max(P_RV),np.max(P_RA)]),axis=0)[-1:],10)+5, step = 5))
+        x_max = (find_nLargestValue(np.concatenate([A_LA,P_RV]),1));
+        y_max = (find_nLargestValue(np.concatenate([P_RV,P_RA]),1));
+        plt.xticks(np.arange(0,np.round(x_max,10)+5, step = 5))
+        plt.yticks(np.arange(0,np.round(y_max,10)+5, step = 5))
         plt.title('Full Plot Overview')
         plt.xlabel('X')
         plt.ylabel('Instances')
@@ -140,30 +141,33 @@ def displayFullPlot():
         #plt.savefig('Instance ' + str(i + 1) + '.png')
         plt.show()
         plt.close()
-
+print(np.max(A_LA))
 def displayThreeSubSlots():
     for i in range(0, 1) :
         plt.subplot( 311 )
         plt.scatter(A_LA, P_RV,s=sizP,c='green',label='ALA vs PRV')
         plt.title('Waveforms for Instance 1')
-        plt.xlabel('ALA')
-        plt.ylabel('PRV')
+        plt.ylabel('ALA vs PRV')
+        x_max = (find_nLargestValue(A_LA,1));
+        y_max = (find_nLargestValue(P_RV,1));
         plt.xticks(np.arange(0,np.round(np.max(A_LA),10)+5, step = 5))
         plt.yticks(np.arange(0,np.round(np.max(P_RV),10)+5, step = 5))
 
         plt.subplot( 312 )
         plt.scatter(A_LA, P_RA,s=sizP,c='blue',label='ALA vs PRA')
-        plt.xlabel('ALA')
-        plt.ylabel('PRA')
-        plt.xticks(np.arange(0,np.round(np.max(A_LA),10)+5, step = 5))
-        plt.yticks(np.arange(0,np.round(np.max(P_RA),10)+5, step = 5))
+        plt.ylabel('ALA vs PRA')
+        x_max = (find_nLargestValue(A_LA,1));
+        y_max = (find_nLargestValue(P_RA,1));
+        plt.xticks(np.arange(0,np.round(x_max,10)+5, step = 5))
+        plt.yticks(np.arange(0,np.round(y_max,10)+5, step = 5))
 
         plt.subplot( 313 )
         plt.scatter(P_RV,P_RA,s=sizP,c='orange',label='PRV vs PRA')
-        plt.xlabel('PRV')
-        plt.ylabel('PRA')
-        plt.xticks(np.arange(0,np.round(np.max(P_RV),10)+5, step = 5))
-        plt.yticks(np.arange(0,np.round(np.max(P_RA),10)+5, step = 5))
+        plt.ylabel('PRV vs PRA')
+        x_max = (find_nLargestValue(P_RV,1));
+        y_max = (find_nLargestValue(P_RA,1));
+        plt.xticks(np.arange(0,np.round(x_max,10)+5, step = 5))
+        plt.yticks(np.arange(0,np.round(y_max,10)+5, step = 5))
         
         #plt.savefig('Instance ' + str(i + 1) + '.png')
         plt.show()
