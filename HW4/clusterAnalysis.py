@@ -44,10 +44,10 @@ for subList in bigList:
     petalWidth = float(subList[4])
     clusterType = str(subList[5])
 
-    sepal = (sepalLength, sepalWidth)
-    petal = (petalLength, petalWidth)
+    #sepal = (sepalLength, sepalWidth)
+    #petal = (petalLength, petalWidth)
     
-    sepalPetalArray = [sepal, petal]
+    sepalPetalArray = [sepalLength, sepalWidth, petalLength, petalWidth]
 
     if clusterType == "cluster0":
         clusterZero.append(sepalPetalArray)
@@ -66,9 +66,6 @@ for subList in bigList:
     else:
         print("ERROR WITH READING CLUSTER")
         sys.exit(-1)
-
-    euclideanDistance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(sepal, petal)]))
-    # print("Sepal: " + str(sepal) + "\nPetal: " + str(petal) + "\nEuclidean Distance: " + str(euclideanDistance) + "\n\n")
 
 clusterList = []
 
@@ -93,25 +90,27 @@ if clusterFive:
 if clusterSix:
     clusterList.append(clusterSix)
 
-totalAverageDistanceArray = []
+averageDistanceArray = []
+
+def calculateEulideanDistance(pOne, pTwo):
+    euclideanDistance = math.sqrt( (pOne)**2 + (pTwo)**2 )
+    return euclideanDistance
 
 for clusterCategory in clusterList:
     totalDistance = 0
     counter = 0
-    for pointXY in clusterCategory:
-        currentSepalWidth = pointXY[0][0]
-        currentSepalLength = pointXY[0][1]
-        for pointValue in pointXY:
+    for clusterArray in clusterCategory:
+        counter += 1
+        sepalLength = clusterArray[0]
+        sepalWidth = clusterArray[1]
+        petalLength = clusterArray[2]
+        petalWidth = clusterArray[3]
 
-            counter += 1
+        totalDistance += calculateEulideanDistance(sepalLength, sepalWidth)
+        totalDistance += calculateEulideanDistance(sepalLength, petalLength)
+        totalDistance += calculateEulideanDistance(sepalLength, petalWidth)
 
-        
+        print(totalDistance)
+    averageDistanceArray.append(totalDistance / counter)
 
-            euclideanDistance = math.sqrt((currentSepalLength-currentSepalWidth)**2 + (pointXY[0][0]-pointXY[0][1])**2 )
-            totalDistance += euclideanDistance
-        #print(currentSepalLength)    
-    totalAverageDistanceArray.append(totalDistance / counter)
-
-    
-        
-print(totalAverageDistanceArray)
+print(averageDistanceArray)        
