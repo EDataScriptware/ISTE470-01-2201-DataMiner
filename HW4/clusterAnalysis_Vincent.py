@@ -8,6 +8,7 @@ import pandas as pd
 from pandas import DataFrame
 from scipy.io.arff import loadarff
 from scipy.spatial import distance
+import numpy as np
 
 raw = loadarff(str(sys.argv[1]))
 df = pd.DataFrame(raw[0])
@@ -19,39 +20,34 @@ cohesion = []
 avg_silcoe_rds = []
 # print(data)
 
-for i in range(3,4):
+def calculateEulideanDistance(ctrd,data):
+    totalEuclideanDistance = 0
+    for i in range(0,len(data)):
+        totalEuclideanDistance += math.sqrt(  (data[i][0]-ctrd[0])**2 + (data[i][1]-ctrd[1])**2 + (data[i][2]-ctrd[2])**2 + (data[i][3]-ctrd[3])**2 )
+    return totalEuclideanDistance
+
+for i in range(3,7):
     kmeans = KMeans(n_clusters=i, n_init = 10, max_iter = 500, random_state=10)
     kmeans.fit(data)
     print(' ')
-    print('----- ' + str(i) + ' K-VALUE -----')
-    km = kmeans.cluster_centers_
-    # print(km)
-    km_center_rds.append(km)
+    print('===== ' + str(i) + ' K-VALUE =====')
+    ctrd = kmeans.cluster_centers_
+    km_center_rds.append(ctrd)
 
     # Get the cohesion data of each k cluster
     for j in range(0,i):
         k = df[kmeans.labels_==j].iloc[:,[0,1,2,3]].values
-        print(k.inertia_)
-        cohesion.append(distance.euclidean(k))
-
-    print('---- SSE: ' + str(kmeans.inertia_) + ' ----')
+        cohesion.append(calculateEulideanDistance(ctrd[j],k))
+    # SSE
+    print('SSE: ' + str(kmeans.inertia_))
     sse_rds.append(kmeans.inertia_)
-    # print(kmeans.labels_)
     sil_coe = met.silhouette_score(data,kmeans.labels_, metric='sqeuclidean')
-    print('---- Score: ' + str(sil_coe) + ' ----')
+    print('Silhouette Score: ' + str(sil_coe))
     avg_silcoe_rds.append(sil_coe)
 
 
-print('------ COHESION RECORD ------')
-print(cohesion)
-# k1 = df[kmeans.labels_==0].iloc[:,[0,1,2,3]].values
-# k2 = df[kmeans.labels_==1]
-# k3 = df[kmeans.labels_==2]
-# met.silhouette_score(kmean_rds[0].tolist(),kmeans.labels_,metric='sqeclidean')
-print('------ SSE RECORDS ------')
-print(sse_rds)
-#print('------ KMEANS RECORDS ------')
-#print(kmean_rds)
-print('------ AVG SILHOUETTE COE RECORDS ------')
-print(avg_silcoe_rds)
-
+print('\nEuaclidean Distance to centroid Records: ')
+for i in range(0,len(cohesion)):
+    print('Cluster #' + str(i) + ': ' + str(cohesion[i]))
+#print('\nFinal Cluster Centroids: ')
+#print(km_center_rds)
