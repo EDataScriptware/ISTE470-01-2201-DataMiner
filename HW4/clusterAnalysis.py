@@ -90,27 +90,51 @@ if clusterFive:
 if clusterSix:
     clusterList.append(clusterSix)
 
-averageDistanceArray = []
+
+# This is the correct formula. I (Edward) checked with Prof. Golen.
 
 def calculateEulideanDistance(pOne, pTwo):
-    euclideanDistance = math.sqrt( (pOne)**2 + (pTwo)**2 )
+    euclideanDistance = math.sqrt(  (pOne[0]-pTwo[0])**2 + (pOne[1]-pTwo[1])**2 + (pOne[2]-pTwo[2])**2 + (pOne[3]-pTwo[3])**2 )
     return euclideanDistance
 
+#firstPoint = clusterList[1][0]
+#secondPoint = clusterList[1][1]
+
+# print(firstPoint)
+# print(secondPoint)
+
+# result = calculateEulideanDistance(firstPoint, secondPoint)
+# print(result)
+
+# NOTES:
+# >tricky
+# function compute_coheison
+# in compute_coheision, iterate across through all the clusters 
+# for a given cluster, you iterate through all the points 
+# for each point in the cluster, you need to calculate the distance to all points inside the cluster. (intra-cluster)
+# Sum up all the distances then you divide by the number of points in the (lengthcluster - 1) 
+# looks at cluster 1 and uses the first cluster to compare distances to other points.  (use the first point as a static variable)
+
+# clusterList is a 2d array of clusters.
+# clusterCategory is clusterZero, clusterOne, clusterTwo, etc. 
+
+averageDistanceArray = []
+totalDistance = 0
+counter = 0
 for clusterCategory in clusterList:
-    totalDistance = 0
-    counter = 0
-    for clusterArray in clusterCategory:
-        counter += 1
-        sepalLength = clusterArray[0]
-        sepalWidth = clusterArray[1]
-        petalLength = clusterArray[2]
-        petalWidth = clusterArray[3]
+    try: 
+        while True:
+            counter += 1
+            print(clusterCategory[0])
+            print(clusterCategory[counter])
+            
+            totalDistance += calculateEulideanDistance(clusterCategory[0], clusterCategory[counter])
 
-        totalDistance += calculateEulideanDistance(sepalLength, sepalWidth)
-        totalDistance += calculateEulideanDistance(sepalLength, petalLength)
-        totalDistance += calculateEulideanDistance(sepalLength, petalWidth)
+    except: 
+        result = totalDistance / (counter - 1)
+        averageDistanceArray.append(result)
+        counter = 0
+        totalDistance = 0
 
-        print(totalDistance)
-    averageDistanceArray.append(totalDistance / counter)
 
-print(averageDistanceArray)        
+print(averageDistanceArray)
