@@ -1,15 +1,11 @@
 # Edward Riley & Vincent Venutolo
 
 import sys, os, math
+import pandas as pd
 from sklearn import metrics as met
 from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_samples, silhouette_score
-from sklearn.metrics.pairwise import euclidean_distances as smetp
-import pandas as pd
-from pandas import DataFrame
 from scipy.io.arff import loadarff
 from scipy.spatial import distance
-import numpy as np
 
 raw = loadarff(str(sys.argv[1]))
 df = pd.DataFrame(raw[0])
