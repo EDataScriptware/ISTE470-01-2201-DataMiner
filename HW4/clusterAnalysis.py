@@ -121,6 +121,7 @@ def calculateEulideanDistance(pOne, pTwo):
 averageDistanceArray = []
 totalDistance = 0
 counter = 0
+
 for clusterCategory in clusterList:
     try: 
         while True:
