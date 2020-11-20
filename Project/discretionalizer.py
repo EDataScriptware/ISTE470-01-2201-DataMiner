@@ -65,8 +65,8 @@ with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") a
     output += "@ATTRIBUTE numberOfOwners {lower, low, medium, prehigh, high}\n"
     output += "@ATTRIBUTE gameMode {singleplayer, multiplayer, both, n/a}\n"
     output += "@ATTRIBUTE isFree {no, yes}\n" #1
-    # output += "@ATTRIBUTE categorySinglePlayer {no, yes}\n" #2
-    # output += "@ATTRIBUTE categoryMultiplayer {no, yes}\n" #3
+    output += "@ATTRIBUTE categorySinglePlayer {no, yes}\n" #2
+    output += "@ATTRIBUTE categoryMultiplayer {no, yes}\n" #3
     # output += "@ATTRIBUTE categoryCoop {no, yes}\n" #4
     # output += "@ATTRIBUTE categoryMMO {no, yes}\n" #5
     #output += "@ATTRIBUTE categoryInAppPurchase {no, yes}\n" #6
@@ -142,7 +142,7 @@ with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") a
             # Dicrete all selected attributes - motified to skip 4 category attributes for new game mode attribute
             h = 22
             while h < len(headers):
-                if (not h >= 23 and h <= 34) or (h >= 43 and h <= 55):
+                if (not h >= 23 and h <= 34) or (h >= 43 and h <= 55) or h == 35 or h == 36:
                     # print(str(h) + ' ' + data[h])
                     rd = ''
                     rd = str(yesOrNo(data[h],count) + ",")
