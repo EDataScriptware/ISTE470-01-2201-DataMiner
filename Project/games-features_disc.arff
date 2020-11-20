@@ -1,6 +1,6 @@
 @RELATION games-disc
 @ATTRIBUTE recommendationCount {lower, low, medium, prehigh, high}
-@ATTRIBUTE Steamspyowners {lower, low, medium, prehigh, high}
+@ATTRIBUTE numberOfOwners {lower, low, medium, prehigh, high}
 @ATTRIBUTE isFree {no, yes}
 @ATTRIBUTE categorySinglePlayer {no, yes}
 @ATTRIBUTE categoryMultiplayer {no, yes}

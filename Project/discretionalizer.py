@@ -61,7 +61,7 @@ with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") a
 
     output += "@RELATION games-disc\n"
     output += "@ATTRIBUTE recommendationCount {lower, low, medium, prehigh, high}\n"
-    output += "@ATTRIBUTE Steamspyowners {lower, low, medium, prehigh, high}\n"
+    output += "@ATTRIBUTE numberOfOwners {lower, low, medium, prehigh, high}\n"
     output += "@ATTRIBUTE isFree {no, yes}\n" #1
     output += "@ATTRIBUTE categorySinglePlayer {no, yes}\n" #2
     output += "@ATTRIBUTE categoryMultiplayer {no, yes}\n" #3
