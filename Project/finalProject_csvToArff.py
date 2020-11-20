@@ -1,30 +1,37 @@
-# Edward Riley
+# Edward Riley & Vincent Venutolo
 
 import sys
 import os
+import chardet as cd
 
 subList = ""
 bigList = []
 subList = []
-
+headers = []
 output = ""
 
-with open("games-features.csv") as f:
+i = 0
+with open("games-features.csv", encoding="utf-8", errors="replace") as f:
     lines = f.readlines()
     for line in lines:
+        if i == 0:
+            headers = line.split(",")
+        i += 1
         subList = line.split(",")
-
         maximumSize = len(subList) - 1
         subList[maximumSize] = subList[maximumSize].replace("\r\n", "")
 
         bigList.append(subList)
-        
 
-        
         # Gets rid of \n in the last list item.
 
+def listHeaders():
+        cnt = 0
+        for h in headers:
+            print(str(cnt)+" = "+h)
+            cnt += 1
 
-with open("games-features.arff", "w") as f:
+with open("games-features.arff", "w", encoding="utf-8", errors="replace") as f:
     output =  "@RELATION games\n"                       
     output += "@ATTRIBUTE queryID\tstring\n"
     output += "@ATTRIBUTE queryName\tstring\n"
@@ -66,44 +73,61 @@ with open("games-features.arff", "w") as f:
         
     count = 0
 
+
+
+    # Custom Error Exception
+    class RecordHasEmptyField(Exception):
+        """Record has one of emptied fields. So, It cannot be added to arff file."""
+
+
     for subList in bigList:
-            count += 1
-            if count == 1:
-                variable = "do nothing";
-            else:
-                output += subList[0] + ","                                  # QueryID
-                queryName = subList[2].replace(" ", "-")                                # QueryName
+        count += 1
+        if count == 1:
+            variable = "do nothing";
+        else:
+            try:
+                if any(x == '' for x in subList):
+                    raise RecordHasEmptyField(count)
+
+                record = ""
+                record += subList[0] + ","                                  # QueryID
+                queryName = subList[2].replace(" ", "-")                    # QueryName
                 queryName = queryName.replace("'", "") + ","
-                output += queryName
-                output += subList[12] + ","                                 # RecommendationCount
-                output += subList[15] + ","                                 # SteamSpyOwners
-                output += str(booleanConverterSubList(subList[22])) + ","   # isFree
-                output += str(booleanConverterSubList(subList[35])) + ","   # CategorySinglePlayer
-                output += str(booleanConverterSubList(subList[36])) + ","   # CategoryMultiplayer
-                output += str(booleanConverterSubList(subList[37])) + ","   # CategoryCoop
-                output += str(booleanConverterSubList(subList[38])) + ","   # CategoryMMO
-                output += str(booleanConverterSubList(subList[39])) + ","   # CategoryInAppPurchases
-                output += str(booleanConverterSubList(subList[41])) + ","   # CategoryIncludesLevelEditor
-                output += str(booleanConverterSubList(subList[42])) + ","   # CategoryVRSupport
-                output += str(booleanConverterSubList(subList[43])) + ","   # GenreIsNongame
-                output += str(booleanConverterSubList(subList[44])) + ","   # GenreIsIndie
-                output += str(booleanConverterSubList(subList[45])) + ","   # GenreIsAction
-                output += str(booleanConverterSubList(subList[46])) + ","   # GenreIsAdventure
-                output += str(booleanConverterSubList(subList[47])) + ","   # GenreIsCasual
-                output += str(booleanConverterSubList(subList[48])) + ","   # GenreIsStrategy
-                output += str(booleanConverterSubList(subList[49])) + ","   # GenreIsRPG
-                output += str(booleanConverterSubList(subList[50])) + ","   # GenreIsSimulation
-                output += str(booleanConverterSubList(subList[51])) + ","   # GenreIsEarlyAccess
-                output += str(booleanConverterSubList(subList[52])) + ","   # GenreIsFreeToPlay
-                output += str(booleanConverterSubList(subList[53])) + ","   # GenreIsSports
-                output += str(booleanConverterSubList(subList[54])) + ","   # GenreIsRacing
-                output += str(booleanConverterSubList(subList[55])) + ","   # GenreIsMMO
-                output += subList[57] + ","                                 # PriceInitial
-                output += (subList[58]) + ""                               # PriceFinal
+                record += queryName
+                record += subList[12] + ","                                 # RecommendationCount
+                record += subList[15] + ","                                 # SteamSpyOwners
+                record += str(booleanConverterSubList(subList[22])) + ","   # isFree
+                record += str(booleanConverterSubList(subList[35])) + ","   # CategorySinglePlayer
+                record += str(booleanConverterSubList(subList[36])) + ","   # CategoryMultiplayer
+                record += str(booleanConverterSubList(subList[37])) + ","   # CategoryCoop
+                record += str(booleanConverterSubList(subList[38])) + ","   # CategoryMMO
+                record += str(booleanConverterSubList(subList[39])) + ","   # CategoryInAppPurchases
+                record += str(booleanConverterSubList(subList[41])) + ","   # CategoryIncludesLevelEditor
+                record += str(booleanConverterSubList(subList[42])) + ","   # CategoryVRSupport
+                record += str(booleanConverterSubList(subList[43])) + ","   # GenreIsNongame
+                record += str(booleanConverterSubList(subList[44])) + ","   # GenreIsIndie
+                record += str(booleanConverterSubList(subList[45])) + ","   # GenreIsAction
+                record += str(booleanConverterSubList(subList[46])) + ","   # GenreIsAdventure
+                record += str(booleanConverterSubList(subList[47])) + ","   # GenreIsCasual
+                record += str(booleanConverterSubList(subList[48])) + ","   # GenreIsStrategy
+                record += str(booleanConverterSubList(subList[49])) + ","   # GenreIsRPG
+                record += str(booleanConverterSubList(subList[50])) + ","   # GenreIsSimulation
+                record += str(booleanConverterSubList(subList[51])) + ","   # GenreIsEarlyAccess
+                record += str(booleanConverterSubList(subList[52])) + ","   # GenreIsFreeToPlay
+                record += str(booleanConverterSubList(subList[53])) + ","   # GenreIsSports
+                record += str(booleanConverterSubList(subList[54])) + ","   # GenreIsRacing
+                record += str(booleanConverterSubList(subList[55])) + ","   # GenreIsMMO
+                record += subList[57] + ","                                 # PriceInitial
+                record += (subList[58]) + ""                               # PriceFinal
 
+                output += record
+            except RecordHasEmptyField as re:
+                # Skipping this to next iteration
+                print('Cannot add #'+str(count)+' Record because it contains an empty field.')
+                continue
 
+        output += "\n"
 
-
-                output += "\n"
     f.write(output)
-
+    
+listHeaders()
