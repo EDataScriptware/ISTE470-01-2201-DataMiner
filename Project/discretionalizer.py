@@ -69,9 +69,9 @@ with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") a
     # output += "@ATTRIBUTE categoryMultiplayer {no, yes}\n" #3
     # output += "@ATTRIBUTE categoryCoop {no, yes}\n" #4
     # output += "@ATTRIBUTE categoryMMO {no, yes}\n" #5
-    output += "@ATTRIBUTE categoryInAppPurchase {no, yes}\n" #6
-    output += "@ATTRIBUTE categoryIncludesLevelEditor {no, yes}\n" #7
-    output += "@ATTRIBUTE categoryVrSupport {no, yes}\n" #8
+    #output += "@ATTRIBUTE categoryInAppPurchase {no, yes}\n" #6
+    #output += "@ATTRIBUTE categoryIncludesLevelEditor {no, yes}\n" #7
+    #output += "@ATTRIBUTE categoryVrSupport {no, yes}\n" #8
     output += "@ATTRIBUTE genreIsNongame {no, yes}\n"#9
     output += "@ATTRIBUTE genreIsIndie {no, yes}\n"#10
     output += "@ATTRIBUTE genreIsAction {no, yes}\n" #11
@@ -142,7 +142,7 @@ with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") a
             # Dicrete all selected attributes - motified to skip 4 category attributes for new game mode attribute
             h = 22
             while h < len(headers):
-                if (not h >= 23 and h <= 34) or (h >= 39 and h <= 55) and h != 40:
+                if (not h >= 23 and h <= 34) or (h >= 43 and h <= 55):
                     # print(str(h) + ' ' + data[h])
                     rd = ''
                     rd = str(yesOrNo(data[h],count) + ",")
