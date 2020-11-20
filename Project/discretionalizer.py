@@ -46,9 +46,9 @@ def isInt(input):
 def yesOrNo(input,cnt):
     s = str(input)
     if s == "0" or s == "False":
-        return "yes"
-    elif s == '1' or s == "True":
         return "no"
+    elif s == '1' or s == "True":
+        return "yes"
     else:
         raise RecordHasEmptyField(cnt)
 
@@ -57,16 +57,18 @@ def checkErrorTypes(input, cnt):
         raise RecordHasEmptyField(cnt)
 output = ""
 
+
 with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") as f:
 
     output += "@RELATION games-disc\n"
-    output += "@ATTRIBUTE recommendationCount {lower, low, medium, prehigh, high}\n"
+    # output += "@ATTRIBUTE recommendedCount {lower, low, medium, prehigh, high}\n"
     output += "@ATTRIBUTE numberOfOwners {lower, low, medium, prehigh, high}\n"
+    output += "@ATTRIBUTE gameMode {singleplayer, multiplayer, both, n/a}\n"
     output += "@ATTRIBUTE isFree {no, yes}\n" #1
-    output += "@ATTRIBUTE categorySinglePlayer {no, yes}\n" #2
-    output += "@ATTRIBUTE categoryMultiplayer {no, yes}\n" #3
-    output += "@ATTRIBUTE categoryCoop {no, yes}\n" #4
-    output += "@ATTRIBUTE categoryMMO {no, yes}\n" #5
+    # output += "@ATTRIBUTE categorySinglePlayer {no, yes}\n" #2
+    # output += "@ATTRIBUTE categoryMultiplayer {no, yes}\n" #3
+    # output += "@ATTRIBUTE categoryCoop {no, yes}\n" #4
+    # output += "@ATTRIBUTE categoryMMO {no, yes}\n" #5
     output += "@ATTRIBUTE categoryInAppPurchase {no, yes}\n" #6
     output += "@ATTRIBUTE categoryIncludesLevelEditor {no, yes}\n" #7
     output += "@ATTRIBUTE categoryVrSupport {no, yes}\n" #8
@@ -96,19 +98,18 @@ with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") a
             if not isInt(data[12]) or not isInt(data[13]):
                 raise RecordHasEmptyField(count)
 
-            # Recommendation Count
-            checkErrorTypes(data[12],count)
-
-            if int(data[12]) < 1000:
-                record += "lower,"
-            elif  1000 <= int(data[12]) and int(data[12]) < 3000:
-                record += "low,"
-            elif 3000 <= int(data[12]) and int(data[12]) < 10000:
-                record += "medium,"
-            elif 10000 <= int(data[12]) and int(data[12]) < 50000:
-                record += "prehigh,"
-            else:
-                record += "high,"
+            # Recommended Count
+            #checkErrorTypes(data[12],count)
+            #if int(data[12]) < 250:
+            #    record += "lower,"
+            #elif  1000 <= int(data[12]) and int(data[12]) < 500:
+            #    record += "low,"
+            #elif 3000 <= int(data[12]) and int(data[12]) < 750:
+            #    record += "medium,"
+            #elif 10000 <= int(data[12]) and int(data[12]) < 1000:
+            #    record += "prehigh,"
+            #else:
+            #    record += "high,"
             
             # Steamspyowners
             checkErrorTypes(data[15],count)
@@ -123,16 +124,40 @@ with open('games-features_disc.arff', 'w', encoding="utf-8", errors="replace") a
             else:
                 record += "high,"
             
+            # gameMode
+            sp = str(data[35])
+            mp = str(data[36])
+            # print("SP: " + sp + " | MP: " + mp)
+            # if (count == 20):
+            #    exit()
+            if (sp == "1" or sp == "True") and (mp == "1" or mp == "True"):
+                record += "both,"
+            elif (sp == "1" or sp == "True") and (mp == "0" or mp == "False"):
+                record += "singleplayer,"
+            elif (sp == "0" or sp == "False") and (mp == "1" or mp == "True"):
+                record += "multiplayer,"
+            else:
+                record += "n/a,"
 
-            # Dicrete all selected attributes
+            # Dicrete all selected attributes - motified to skip 4 category attributes for new game mode attribute
             h = 22
             while h < len(headers):
-                if (not h >= 23 and h <= 34) or (h >= 35 and h <= 55) and h != 40:
-                    #print(str(h) + ' ' + data[h])
+                if (not h >= 23 and h <= 34) or (h >= 39 and h <= 55) and h != 40:
+                    # print(str(h) + ' ' + data[h])
                     rd = ''
                     rd = str(yesOrNo(data[h],count) + ",")
                     record += rd
                 h += 1
+
+            # Dicrete all selected attributes
+            #h = 22
+            #while h < len(headers):
+            #    if (not h >= 23 and h <= 34) or (h >= 35 and h <= 55) and h != 40:
+            #        #print(str(h) + ' ' + data[h])
+            #        rd = ''
+            #        rd = str(yesOrNo(data[h],count) + ",")
+            #        record += rd
+            #    h += 1
 
             # PriceInitial
             checkErrorTypes(data[57],count)
